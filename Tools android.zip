@@ -1,0 +1,270 @@
+# 3.0 Architecture and Design
+
+- [3.0 Architecture and Design](#30-architecture-and-design)
+  - [3.1 Explain use cases and purpose for frameworks, best practices and secure configuration guides.](#31-explain-use-cases-and-purpose-for-frameworks-best-practices-and-secure-configuration-guides)
+    - [3.1.1 Industry-standard frameworks and reference architectures](#311-industry-standard-frameworks-and-reference-architectures)
+    - [3.1.2 Benchmarks/secure configuration guides](#312-benchmarkssecure-configuration-guides)
+    - [3.1.3 Defense-in-depth/layered security](#313-defense-in-depthlayered-security)
+  - [3.2 Given a scenario, implement secure network architecture concepts.](#32-given-a-scenario-implement-secure-network-architecture-concepts)
+    - [3.2.1 Zones/topologies](#321-zonestopologies)
+    - [3.2.2 Segregation/segmentation/isolation](#322-segregationsegmentationisolation)
+    - [3.2.3 Tunneling/VPN](#323-tunnelingvpn)
+    - [3.2.4 Security device/technology placement](#324-security-devicetechnology-placement)
+  - [3.3 Given a scenario, implement secure systems design.](#33-given-a-scenario-implement-secure-systems-design)
+    - [3.3.1 Hardware/firmware security](#331-hardwarefirmware-security)
+    - [3.3.2 Operating systems](#332-operating-systems)
+    - [3.3.3 Peripherals](#333-peripherals)
+  - [3.4 Explain the importance of secure staging deployment concepts.](#34-explain-the-importance-of-secure-staging-deployment-concepts)
+  - [3.5 Explain the security implications of embedded systems.](#35-explain-the-security-implications-of-embedded-systems)
+  - [3.6 Summarize secure application development and deployment concepts.](#36-summarize-secure-application-development-and-deployment-concepts)
+    - [3.6.1 Development life-cycle models](#361-development-life-cycle-models)
+    - [3.6.2 Secure DevOps](#362-secure-devops)
+    - [3.6.4 Provisioning and de-provisioning](#364-provisioning-and-de-provisioning)
+    - [3.6.5 Code quality and testing](#365-code-quality-and-testing)
+    - [3.6.6 Compiled vs. runtime code](#366-compiled-vs-runtime-code)
+  - [3.7 Summarize cloud and virtualization concepts.](#37-summarize-cloud-and-virtualization-concepts)
+  - [3.8 Explain how resiliency and automation strategies reduce risk.](#38-explain-how-resiliency-and-automation-strategies-reduce-risk)
+    - [3.8.1 Automation/scripting](#381-automationscripting)
+    - [3.8.2 Templates](#382-templates)
+    - [3.8.3 Master image](#383-master-image)
+    - [3.8.4 Non-persistence](#384-non-persistence)
+    - [3.8.5 Elasticity](#385-elasticity)
+    - [3.8.6 Scalability](#386-scalability)
+    - [3.8.7 Distributive allocation](#387-distributive-allocation)
+    - [3.8.8 Redundancy](#388-redundancy)
+    - [3.8.9 Fault tolerance](#389-fault-tolerance)
+    - [3.8.10 High availability (HA)](#3810-high-availability-ha)
+    - [3.8.11 RAID](#3811-raid)
+  - [3.9 Explain the importance of physical security controls.](#39-explain-the-importance-of-physical-security-controls)
+
+## 3.1 Explain use cases and purpose for frameworks, best practices and secure configuration guides.
+
+### 3.1.1 Industry-standard frameworks and reference architectures
+ ([James Messer](https://www.youtube.com/watch?v=JndVtgKf9IE&list=PL5ysgoFoCpZEM8cboeHdRDePc2bOU9CN1&index=65), [Jason Dion](https://www.udemy.com/program/comptia-security/learn/2015076/lecture/13220034#overview), [Mike Meyers](https://www.udemy.com/course/comptia-security-certification-sy0-501-the-total-course/learn/lecture/9826392#overview))
+  - Industry-standard framework
+    - A security framework is a guide or plan for keeping your organizational assets safe. It provides guidance and a structure to the implementation of security for organizations. Security frameworks may be regulatory, nonregulatory, national, international, and/or industry-specific.(Stewart)
+  - Regulatory
+    - "Industries under governmental regulation frequently have an approved set of architectures defined by regulatory bodies." (Conklin)
+    - Examples:
+      - Sarbanes-Oxley Act (SOX)
+      - The Health Insurance Portability and Accountability Act (HIPAA)
+      - The Gramm-Leach-Bliley Act of 1999 (GLBA)
+  - Non-regulatory
+    - Strong suggestions
+    - Maybe have regulation in the works
+    - In your best interest
+    - Right thing to do
+  - National vs. international
+  - Industry-specific frameworks
+    - Process management: "Getting the IT 'product' to work best with the organization." (Messer)
+    - Best practices
+    - Examples:
+      - Control Objectives for Information and Related Technologies (COBIT).
+      - ITIL. (Information Technology Infrastructure Library) Multiple stages of the IT lifecycle.
+### 3.1.2 Benchmarks/secure configuration guides 
+([James Messer](https://www.youtube.com/watch?v=NViJR3ozfiQ&list=PL5ysgoFoCpZEM8cboeHdRDePc2bOU9CN1&index=64))
+  - Benchmark
+    - A benchmark is a documented list of requirements that is used to determine whether a system, device, or software solution is allowed to operate within a secure management environment. Benchmarks may be platform- or vendor-specific or general-purpose.(Stewart)
+  - Platform/vendor-specific guides
+    - Web server
+      - Run server from non-privileged account
+      - Configure file permissions
+      - Prevent data leaks, unauthorized server access
+      - Configure SSL certs
+      - Monitor access and error logs
+    - Operating system
+      - Service packs, security packages
+      - User account passwords, account limitations
+      - Limit network access
+      - Provide ongoing monitoring
+    - Application server
+      - Not very common but some cases to provide runtime libraries etc.
+      - Usually sits between webserver and the database (middleware)
+      - Disable unnecessary services
+      - Install security patches
+      - Limit access from other devices
+    - Network infrastructure devices
+      - SWITCHES/ROUTERS/FIREWALLS/IPS
+      - Embedded OS , limited OS access 
+      - Don't use defaults for authentication
+      - Security updates - check with the manufacturer
+  - General purpose guides
+### 3.1.3 Defense-in-depth/layered security 
+([James Messer](https://www.youtube.com/watch?v=HLQ4wX8NxQY&list=PL5ysgoFoCpZEM8cboeHdRDePc2bOU9CN1&index=66))
+  - Defense-in-depth
+    - Mixture of technologies (layering of technology) to provide the security we need
+    - Defense in depth or layered security is the use of multiple types of access controls in literal or theoretical concentric circles or layers. Defense in depth should include vendor diversity and control diversity.(Stewart)
+  - Physical controls
+    - Locks, fences, cameras
+      - "Fencing acts as the first line of defense against casual trespassers and potential intruders." (uCertify)
+    - Card/badge access
+    - Security guard
+  - Vendor diversity
+    - "Having multiple suppliers creates vendor diversity, which reduces the risk from any single supplier... Having only a monoculture raises risks when something specific to that environment fails." (Conklin)
+  - Control diversity
+    - Administrative
+      - Policies and procedures
+      - Onboarding and offboarding
+    - Technical
+      - Hardware and software
+      - Firewalls, active directory authentication, disk encryption
+      - DMZ
+      - Hashing and salting passwords
+      - Intrusion prevention system
+      - VPN access
+      - Anti-virus, anti-malware software
+  - User training
+    - "The best defense is to implement a strong user training program that instructs users to recognize safe and unsafe computing behaviors. The best form of user training has proven to be user-specific training, training that is related to the tasks that individuals use computers to accomplish." (Conklin)
+
+## 3.2 Given a scenario, implement secure network architecture concepts.
+ ([Mike Meyers](https://www.udemy.com/course/comptia-security-certification-sy0-501-the-total-course/learn/lecture/9827380#overview))
+
+### 3.2.1 Zones/topologies 
+([James Messer](https://www.youtube.com/watch?v=ZluKkoJPIE0&list=PL5ysgoFoCpZEM8cboeHdRDePc2bOU9CN1&index=67), [Mike Meyers](https://www.udemy.com/course/comptia-security-certification-sy0-501-the-total-course/learn/lecture/9827054#overview))
+  - DMZ (Screened Subnet)
+    - "An additional layer of security between the Internet and you." (Messer)
+    - A demilitarized zone (DMZ) is an area of a network that is designed specifically for public users to access. The DMZ is a buffer network between the public untrusted Internet and the private trusted LAN. Often a DMZ is deployed through the use of a multihomed firewall. (Stewart) 
+    - Usually requires additional authentication, only allow access to authorized users 
+  - Extranet
+    - Private DMZ
+    - An extranet is an intranet that functions as a DMZ for business-to-business transactions. Extranets let organizations offer specialized services to business partners, suppliers, distributors, or customers. (Stewart)
+    - "A private network for partners." (Messer)
+  - Intranet
+    - Private. Only available internally.
+    - Company business, documents, announcements. (Messer)
+    - No external access. Accessible internally or via VPN.
+  - Wireless
+    - 802.1X standard for connection.
+      - Use normal network login credentials.
+      - No shared passphrase.
+  - Guest
+    - Meetings, demonstrations.
+    - Internet access only.
+    - Integrate with "captive portal"
+      - Require username/password
+      - Avoid unauthorized use
+  - Ad hoc
+    - Wireless without an access point
+    - Point to point communication
+    - e.g. AirDrop
+    - Difficult to manage
+    - MDM can allow, disallow, set parameters
+  - Honeynets, honeypots
+    - Attract hackers, bots
+    - Recon, intel on attempted intruders
+    - Honeypot: single-use/single-system
+    - Honeynet: group of honeypots
+  - Network Address Translation (NAT)
+    - NAT converts the IP addresses of internal systems found in the headers of network packets into public IP addresses. It hides the IP addressing scheme and structure from external entities. NAT serves as a basic firewall by only allowing incoming traffic that is in response to an internal system’s request. It reduces expense by requiring fewer leased public IP addresses, and it allows the use of private IP addresses (Stewart)
+    - IPv4 support being exhausted
+    - Not a security mechanism
+    - Unprotected NAT can be circumvented
+    - Combined with statement firewall for security
+### 3.2.2 Segregation/segmentation/isolation
+ ([James Messer](https://www.youtube.com/watch?v=0i1CN8b1ZKQ&list=PL5ysgoFoCpZEM8cboeHdRDePc2bOU9CN1&index=68))
+  - Physical, logical or virtual segmentation
+  - Useful for performance (high bandwidth) speed, security, and compliance
+  - Physical
+  - Logical (VLAN)
+    - Separated logically instead of physically
+    - "Cannot communicate between VLANs without Layer 3 device / router." (Messer)
+  - Virtualization
+    - Instant and complete control
+    - Build new network programmatically
+    - Route between IP subnets
+  - Air gaps
+    - "Air gaps is the term used to describe when no data path exists between two networks that are not connected in any way except via a physical air gap between them." (Conklin)
+    - No shared components, no possible way to communicate to each other (SCADA/ manufacturing)
+### 3.2.3 Tunneling/VPN
+ ([James Messer](https://www.youtube.com/watch?v=tuVwJsFJtr8&list=PL5ysgoFoCpZEM8cboeHdRDePc2bOU9CN1&index=69), [Mike Meyers](https://www.udemy.com/course/comptia-security-certification-sy0-501-the-total-course/learn/lecture/9827088#overview))
+  - Site-to-site
+    - "Site-to-site communication links are network connections that connect two or more networks across an intermediary network layer." (Conklin)
+  - Remote access
+    - "Remote access via a tunnel or VPN has the same effect as directly connecting the remote system to the network—it’s as if the remote user just plugged a network cable directly into her machine." (Conklin)
+    - Usually involve with VPN concentrator on cooperate network
+  - VPN protocols. 
+    - PPTP, L2TP, OpenVPN, and IPSec are VPN protocols.
+  - Point-to-Point Tunneling Protocol (PPTP)
+    - PPTP is based on PPP, is limited to IP traffic, and uses TCP port 1723. PPTP supports PAP, SPAP, CHAP, EAP, and MS-CHAP v.1 and v.2
+  - Layer 2 Tunneling Protocol (L2TP) 
+    - L2TP is based on PPTP and L2F, supports any LAN protocol, uses UDP port 1701, and often uses IPSec for encryption.
+
+  - OpenVPN. 
+    - OpenVPN is based on TLS (formerly SSL) and provides an easy-to-configure but robustly secured VPN option.
+
+### 3.2.4 Security device/technology placement
+ ([James Messer](https://www.youtube.com/watch?v=5yDrpQWBz6M&list=PL5ysgoFoCpZEM8cboeHdRDePc2bOU9CN1&index=70))
+  - Sensors
+    - "Sensors are devices that capture data and act upon it... They can report on what they observe, they can use multiple readings to match a pattern and create an event, and they can act based on proscribed rules." (Conklin)
+    - IPS logs, firewall logs ect. usually raw data
+  - Collectors
+    - "Collectors are sensors, or concentrators that combine multiple sensors that collect data for processing by other systems." (Conklin)
+    - its collectors job to make sens of the data collected by sensors
+  - Correlation engines
+    - "Correlation engines take sets of data and match the patterns against known patterns." (Conklin)
+    - This is use to compare diverse sensor data 
+  - Filters
+    - "Packet filters process packets at a network interface based on source and destination addresses, ports, or protocols, and either allow passage or block them based on a set of rules." (Conklin)
+    - usually on device or server , linux iptables 
+  - Proxies
+    - "Proxies are servers that act as a go-between between clients and other systems; in essence, they are designed to act on the clients’ behalf." (Conklin)
+    - use to access control, caching, URL filtering, content scanning 
+    - Forward proxy is to protect users from the internet 
+  - Firewalls
+    - "Firewalls at their base level are policy enforcement engines that determine whether traffic can pass or not based on a set of rules." (Conklin)
+  - VPN concentrators
+    - "A VPN concentrator takes multiple individual VPN connections and terminates them into a single network point." (Conklin)
+    - Usually located on the edge of the network (internet facing)
+  - SSL accelerators
+    - "An SSL accelerator is used to provide SSL/TLS encryption/decryption at scale, removing the load from web servers." (Conklin)
+  - Load balancers
+    - "Load balancers take incoming traffic from one network location and distribute it across multiple network operations." (Conklin)
+  - DDoS mitigator
+    - "DDoS mitigators by nature must exist outside the area that they are protecting. They act as an umbrella, shielding away the unwanted DDoS packets." (Conklin)
+    - In cloud based DDOS mitigation all the users will filter through cloud based service 
+    - Onsite tools include DDoS filtering in a firewall or IPS
+  - Aggregation switches
+    - "An aggregation switch is a switch that provides connectivity for several other switches. Think of it as a one-to-many type of device. It’s the one switch that many other switches connect to." (Conklin)
+  - Taps and port mirror
+    - "Most enterprise switches have the ability to copy the activity of one or more ports through a Switch Port Analyzer (SPAN) port, also known as a port mirror. This traffic can then be sent to a device for analysis." (Conklin)
+    - "A Test Access Point (TAP) is a passive signal-copying mechanism installed between two points on the network. The TAP can copy all packets it receives, rebuilding a copy of all messages. TAPs provide the one distinct advantage of not being overwhelmed by traffic levels, at least not in the process of data collection." (Conklin)
+    - Port mirror (software based version of TAP) is use to port redirection
+- SDN ([James Messer](https://www.youtube.com/watch?v=Ysxl3qzaSZ0&list=PL5ysgoFoCpZEM8cboeHdRDePc2bOU9CN1&index=71))
+  - "Software-defined networking (SDN)... enables network engineers to reconfigure the network by making changes via a software program, without the need for re-cabling. SDN allows for network function deployment via software." (Conklin)
+  - Control plane - configuration 
+  - Data plane - forwarding the frames, firewalls 
+  - Orchestration 
+
+## 3.3 Given a scenario, implement secure systems design. 
+([Mike Meyers 1](https://www.udemy.com/course/comptia-security-certification-sy0-501-the-total-course/learn/lecture/9826946#overview), [Mike Meyers 2](https://www.udemy.com/course/comptia-security-certification-sy0-501-the-total-course/learn/lecture/9826986#overview))
+
+### 3.3.1 Hardware/firmware security
+ ([James Messer](https://www.youtube.com/watch?v=MdLKu4t_RwU&list=PL5ysgoFoCpZEM8cboeHdRDePc2bOU9CN1&index=72))
+  - FDE/SED ([Mike Meyers](https://www.udemy.com/course/comptia-security-certification-sy0-501-the-total-course/learn/lecture/9826978#overview))
+    - "Full disk encryption (FDE) and self-encrypting disks (SEDs) are methods of implement- ing cryptographic protection on hard disk drives and other similar storage media with the express purpose of protecting the data even if the disk drive is removed from the machine." (Conklin)
+    - FDE built in to the OS (MS Bitlocker, Apple FileVault)
+    - SED is a physical drive that you can buy thats doing encryption for you
+  - TPM
+    - "The Trusted Platform Module (TPM) is a hardware solution on the motherboard, one that assists with key generation and storage as well as random number generation. When the encryption keys are stored in the TPM, they are not accessible via normal software channels and are physically separated from the hard drive or other encrypted data locations." (Conklin)
+  - HSM
+    - "A hardware security module (HSM) is a device used to manage or store encryption keys. It can also assist in cryptographic operations such as encryption, hashing, or the application of digital signatures. HSMs typically are peripheral devices..." (Conklin)
+  - UEFI/BIOS
+    - "Unified Extensible Firmware Interface (UEFI) is the current replacement for BIOS. UEFI offers significant modernization over the decades-old BIOS, including the capability to deal with modern peripherals such as high-capacity storage and high-bandwidth communications." (Conklin)
+  - Secure boot and attestation
+    - Secure Boot
+      - "Secure Boot is a mode that, when enabled, only allows signed drivers and OS loaders to be invoked." (Conklin)
+      - Its a feature of UEFI
+      - "Secure Boot enables the attestation that the drivers and OS loaders being used have not changed since they were approved for use." (Conklin)
+    - Remote attestation
+      -  is a way to verify if any of your hardware or software changed in large scale implementation
+      -  devices provide an operational report to a verification server 
+      -  Encrypt and digitally signed with the TPM
+      -  Changes are identified and managed before the OS boot
+  - Supply chain
+    - "In today’s world of global manufacturing with global outsourcing, attempting to identify all the suppliers in a hardware manufacturer’s supply chain, which commonly changes from device to device, and even between lots, is practically futile in most cases." (Conklin) 
+    - Use trusted vendors, critical devices should not be connected to the outside before security in place 
+  - Hardware root of trust
+    - "A hardware root of trust is a concept that if one has a trusted source of specific security functions, this layer can be used to promote security to higher layers of a system... Examples of roots of trust include TPM chips in computers and Apple’s Secure Enclave coprocessor in its iPhones and iPads." (Conklin)
+    - TPM, HSM designed to be the hardware root of the trust
+  - EMI/EMP
+    - "Electromagnetic interference (EMI) is an electrical disturbance that affects an electrical circuit. EMI is due to either electromagnetic induction or ra
